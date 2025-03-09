@@ -15,9 +15,8 @@ pip install -r requirements.txt
 To use the script, run the following command:
 
 ```bash
-python tools_and_utilities/main.py <profile_folder_path>
+python ./main.py
 ```
-Replace `<profile_folder_path>` with the path to your browser profile, i.e `$HOME/.config/google-chrome/Default/` on Linux.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
