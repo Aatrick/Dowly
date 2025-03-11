@@ -1,18 +1,19 @@
 import abc
 import datetime
+import glob
 import os
 import pathlib
 import platform
 import re
 import sys
 import typing
-import glob
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
 
 
-import ccl_chromium_snss2
 import subprocess
+
+import ccl_chromium_snss2
 
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -101,11 +102,11 @@ class SnssAuditor(AbstractAuditor):
 
 
 def main():
+    username = os.getlogin()
     WINDOWS = platform.system() == "Windows"
     if WINDOWS:
         pattern = ".*"
         domain_re = re.compile(pattern)
-        username = os.getlogin()
         most_recent_path = glob.glob(
             f"C:\\Users\\{username}\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Sessions\\Session*"
         )
@@ -115,13 +116,13 @@ def main():
             f"C:\\Users\\{username}\\AppData\\Local\\Google\\Chrome\\User Data\\Default"
         )
     else:
-        domain_re = re.compile("$HOME/.config/google-chrome/Default")
+        domain_re = re.compile(f"/home/{username}/.config/google-chrome/Default")
         most_recent_path = glob.glob(
-            "$HOME/.config/google-chrome/Default/Sessions/Session*"
+            f"/home/{username}/.config/google-chrome/Default/Sessions/Session*"
         )
         most_recent_path.sort(key=os.path.getmtime, reverse=True)
         most_recent = most_recent_path[0].split("/")
-        profile_folder = pathlib.Path("$HOME/.config/google-chrome/Default")
+        profile_folder = pathlib.Path(f"/home/{username}/.config/google-chrome/Default")
 
     # Keep track of seen URLs
     seen_titles = []
